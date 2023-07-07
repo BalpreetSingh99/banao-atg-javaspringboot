@@ -1,0 +1,100 @@
+<!DOCTYPE html>   
+<html>   
+<head>  
+<meta name="viewport" content="width=device-width, initial-scale=1">  
+<title> Login Page </title>  
+<style>   
+h1{
+    padding-left: 50%;
+}
+Body {  
+  font-family: Calibri, Helvetica, sans-serif;  
+    
+}  
+button {   
+       background-color: #4CAF50;   
+       width: 100%;  
+        color: orange;   
+        padding: 15px;   
+        margin: 10px 0px;   
+        border: none;   
+        cursor: pointer;   
+         }   
+ form {   
+        border: 3px solid #f1f1f1;   
+    }   
+ input[type=text], input[type=password] {   
+        width: 100%;   
+        margin: 8px 0;  
+        padding: 12px 20px;   
+        display: inline-block;   
+        border: 2px solid green;   
+        box-sizing: border-box;   
+    }  
+ button:hover {   
+        opacity: 0.7;   
+    }   
+  .cancelbtn {   
+        width: auto;   
+        padding: 10px 18px;  
+        margin: 10px 5px;  
+    }   
+        
+     
+ .container {   
+        padding: 25px;   
+        width: 50%;
+        margin: auto;
+    }   
+</style>   
+</head>    
+<body>    
+    <h1> Login Portal </h1> 
+        <div class="container">   
+            <label>Email : </label>   
+            <input type="text" placeholder="Enter Email" name="email" required>  
+            <label>Password : </label>   
+            <input type="password" placeholder="Enter Password" name="password" required>  
+            <button id="login">Login</button> 
+            
+        </div>   
+</body>   
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js" ></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+        
+
+        
+        document.getElementById('login').addEventListener("click", myFunction);
+
+        function myFunction(){
+            console.log('yes')
+            let baseURL="http://localhost:8080/api/login";
+            let email = document.getElementsByName('email')[0].value;
+            let password = document.getElementsByName('password')[0].value;
+
+            if(email==="" || password==="" ){
+                alert('Fill out all the fields');
+            }
+            else{
+                let tempUser = {
+                    email : email,
+                    password : password
+                }
+                axios
+                .post(baseURL, tempUser)
+                .then((response) => {
+                    alert(response.data);
+                    if(response.data.includes("authentication successful")){
+                        let firstName = response.data.split("-");
+                        console.log(firstName)
+                        window.location.href = "file:///C:/Users/Balpreet/eclipse-workspace/loginportal/frontend/homepage.html?"+firstName[1];
+                    }
+                });
+            }
+            
+        }
+   
+</script>
+</html>  

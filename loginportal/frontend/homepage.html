@@ -1,0 +1,137 @@
+<html>
+    <head>
+        <title>home page</title>
+    </head>
+    <style>
+        .welcome-heading{
+            padding-left: 50%;
+        }
+        table{
+            margin: auto;
+            font-size: 20px;
+        }
+        table th {
+            background-color: #ff9800;
+            color: #fff;
+            font-weight: bold;
+            padding: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-top: 1px solid #fff;
+            border-bottom: 1px solid #ccc;
+        }     
+        table tr:nth-child(even) td {
+            background-color: #f2f2f2;
+        }
+
+        table tr:hover td {
+            background-color: #ffedcc;
+        }
+        table td {
+            background-color: #fff;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            font-weight: bold;
+        }
+        button {   
+       background-color: #4CAF50;   
+       width: 20%;  
+        color: orange;   
+        padding: 15px;   
+        margin-right: 0%;   
+        border: none;   
+        cursor: pointer;   
+        padding-right: 0px;
+         } 
+         .nav-block{
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content:space-between;
+         }
+    </style>
+    <body>
+        <div class="main">
+        
+                <div class="nav-block">
+                <h1 class="admin-panel"></h1>
+                <button class="logout">Logout</button>
+                </div>
+            
+        </div>
+    </body>
+</html>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    const queryString = window.location.search;
+    let firstName = queryString.slice(1,queryString.length)
+    let baseURL="http://localhost:8080/api/homepage";
+    console.log(queryString);
+    let tempUser = {
+        firstName : firstName
+    }
+    window.onload = (()=>{
+        let main = document.querySelector('.main');
+        axios
+        .post(baseURL, tempUser)
+        .then((response) => {
+            console.log(response);
+            if(response.data===""){
+                document.querySelector('.main').innerHTML+="<h1 class='welcome-heading'>Hi "+ firstName+"</h1>";
+                document.getElementsByClassName('logout')[0].addEventListener("click",clickFunction);
+            }
+            else{
+                document.querySelector('.admin-panel').innerHTML='Admin Panel';
+                let div = document.createElement('table');
+                let h1 = document.createElement('h1');
+                h1.innerHTML="Hi "+ firstName;
+                h1.className="welcome-heading"
+                main.appendChild(h1);
+                let tr=document.createElement('tr');
+                let th1=document.createElement('th');
+                let th2=document.createElement('th');
+                let th3=document.createElement('th');
+                let th4=document.createElement('th');
+                th1.innerHTML="Email"
+                th2.innerHTML="First Name";
+                th3.innerHTML="Verified"
+                th4.innerHTML="User Type";
+                tr.appendChild(th1);
+                    tr.appendChild(th2);
+                    tr.appendChild(th3);
+                    tr.appendChild(th4);
+                    div.appendChild(tr);
+                for(i=0;i<response.data.length;i++){
+                    let tr=document.createElement('tr');
+                    let td1=document.createElement('td');
+                    let td2=document.createElement('td');
+                    let td3=document.createElement('td');
+                    let td4=document.createElement('td');
+                    td1.innerHTML=response.data[i].email;
+                    td2.innerHTML=response.data[i].firstName;
+                    td3.innerHTML=response.data[i].verified;
+                    td4.innerHTML=response.data[i].userType;
+                    tr.appendChild(td1);
+                    tr.appendChild(td2);
+                    tr.appendChild(td3);
+                    tr.appendChild(td4);
+                    div.appendChild(tr);
+                }
+                main.appendChild(div);
+                document.getElementsByClassName('logout')[0].addEventListener("click",clickFunction);
+                
+            }
+            
+        });
+
+        
+        function clickFunction(){
+            console.log('hu')
+            window.location.href = "file:///C:/Users/Balpreet/eclipse-workspace/loginportal/frontend/login.html";
+        }   
+        
+        
+    })
+
+</script>
